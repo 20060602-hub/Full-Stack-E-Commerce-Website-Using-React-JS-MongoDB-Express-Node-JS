@@ -1,1 +1,62 @@
+name: Deploy Full MERN + Admin Panel to Azure
+
+on:
+  push:
+    branches:
+      - master  # adjust if you're using a different branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.x'
+
+      # Build frontend
+      - name: Build Customer Frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+
+      # Build admin panel
+      - name: Build Admin Panel
+        working-directory: admin
+        run: |
+          npm install
+          npm run build
+
+      # Copy frontend build to backend/public
+      - name: Copy Frontend to Backend
+        run: |
+          rm -rf backend/public
+          mkdir -p backend/public
+          cp -r frontend/build/* backend/public/
+
+      # Copy admin build to backend/admin
+      - name: Copy Admin Panel to Backend
+        run: |
+          rm -rf backend/admin
+          mkdir -p backend/admin
+          cp -r admin/build/* backend/admin/
+
+      # Install backend dependencies
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm install
+
+      # Deploy to Azure
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ecommerce-mern-app  # Change if your Azure App name is different
+          slot-name: production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: backend
 
