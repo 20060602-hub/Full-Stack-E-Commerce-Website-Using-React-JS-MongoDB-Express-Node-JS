@@ -10,42 +10,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Install and build frontend
-      working-directory: frontend
-      run: |
-        npm install
-        npm run build
-      env:
-        CI: false
+      - name: Install and build frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+        env:
+          CI: false
 
-    - name: Install and build admin
-      working-directory: admin
-      run: |
-        npm install
-        npm run build
-      env:
-        CI: false
+      - name: Install and build admin
+        working-directory: admin
+        run: |
+          npm install
+          npm run build
+        env:
+          CI: false
 
-    - name: Copy frontend and admin build to backend
-      run: |
-        cp -r frontend/build backend/public
-        cp -r admin/build backend/public/admin
+      - name: Copy frontend and admin build to backend
+        run: |
+          cp -r frontend/build backend/public
+          cp -r admin/build backend/public/admin
 
-    - name: Install backend dependencies
-      working-directory: backend
-      run: npm install
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm install
 
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ecommerce-mern-app
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-        package: backend
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ecommerce-mern-app
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: backend
