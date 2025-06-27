@@ -1,35 +1,48 @@
-- name: Build Customer Frontend
-  working-directory: frontend
-  run: |
-    npm install
-    npm run build
+name: Deploy Full Stack App to Azure
 
-- name: Build Admin Panel
-  working-directory: admin
-  run: |
-    npm install
-    npm run build
+on:
+  push:
+    branches:
+      - main  # or 'master' if your repo uses master
 
-- name: Copy Frontend to Backend
-  run: |
-    rm -rf backend/public
-    mkdir -p backend/public
-    cp -r frontend/build/* backend/public/
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-- name: Copy Admin Panel to Backend
-  run: |
-    rm -rf backend/admin
-    mkdir -p backend/admin
-    cp -r admin/build/* backend/admin/
+      - name: Build Customer Frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
 
-- name: Install Backend Dependencies
-  working-directory: backend
-  run: npm install
+      - name: Build Admin Panel
+        working-directory: admin
+        run: |
+          npm install
+          npm run build
 
-- name: Deploy to Azure App Service
-  uses: azure/webapps-deploy@v2
-  with:
-    app-name: ecommerce-mern-app
-    slot-name: production
-    publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-    package: backend
+      - name: Copy Frontend to Backend
+        run: |
+          rm -rf backend/public
+          mkdir -p backend/public
+          cp -r frontend/build/* backend/public/
+
+      - name: Copy Admin Panel to Backend
+        run: |
+          rm -rf backend/admin
+          mkdir -p backend/admin
+          cp -r admin/build/* backend/admin/
+
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ecommerce-mern-app
+          slot-name: production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: backend
