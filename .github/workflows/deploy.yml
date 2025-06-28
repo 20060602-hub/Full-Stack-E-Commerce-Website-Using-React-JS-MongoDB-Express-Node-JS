@@ -3,7 +3,7 @@ name: Deploy Full MERN + Admin Panel to Azure
 on:
   push:
     branches:
-      - master  # or main
+      - master  # or 'main'
 
 jobs:
   build-and-deploy:
@@ -19,14 +19,14 @@ jobs:
           node-version: '18.x'
 
       - name: Build Customer Frontend
-        working-directory: frontend
+        working-directory: forever-full-stack/frontend
         run: |
           npm install
           npm run build
           ls -la build
 
       - name: Build Admin Panel
-        working-directory: admin
+        working-directory: forever-full-stack/admin
         run: |
           npm install
           npm run build
@@ -34,16 +34,16 @@ jobs:
 
       - name: Copy Frontend to Backend
         run: |
-          mkdir -p backend/public
-          cp -r frontend/build/* backend/public/
+          mkdir -p forever-full-stack/backend/public
+          cp -r forever-full-stack/frontend/build/* forever-full-stack/backend/public/
 
       - name: Copy Admin Panel to Backend
         run: |
-          mkdir -p backend/admin
-          cp -r admin/build/* backend/admin/
+          mkdir -p forever-full-stack/backend/admin
+          cp -r forever-full-stack/admin/build/* forever-full-stack/backend/admin/
 
       - name: Install Backend Dependencies
-        working-directory: backend
+        working-directory: forever-full-stack/backend
         run: npm install
 
       - name: Deploy to Azure App Service
@@ -52,4 +52,4 @@ jobs:
           app-name: ecommerce-mern-app
           slot-name: production
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: backend
+          package: forever-full-stack/backend
