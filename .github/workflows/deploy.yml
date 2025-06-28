@@ -1,42 +1,29 @@
-name: Deploy Full Stack App to Azure
-
-on:
-  push:
-    branches:
-      - main  # or 'master' if your repo uses master
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
       - name: Build Customer Frontend
-        working-directory: frontend
+        working-directory: forever-full-stack/frontend
         run: |
           npm install
           npm run build
 
       - name: Build Admin Panel
-        working-directory: admin
+        working-directory: forever-full-stack/admin
         run: |
           npm install
           npm run build
 
       - name: Copy Frontend to Backend
         run: |
-          rm -rf backend/public
-          mkdir -p backend/public
-          cp -r frontend/build/* backend/public/
+          rm -rf forever-full-stack/backend/public
+          mkdir -p forever-full-stack/backend/public
+          cp -r forever-full-stack/frontend/build/* forever-full-stack/backend/public/
 
       - name: Copy Admin Panel to Backend
         run: |
-          rm -rf backend/admin
-          mkdir -p backend/admin
-          cp -r admin/build/* backend/admin/
+          rm -rf forever-full-stack/backend/admin
+          mkdir -p forever-full-stack/backend/admin
+          cp -r forever-full-stack/admin/build/* forever-full-stack/backend/admin/
 
       - name: Install Backend Dependencies
-        working-directory: backend
+        working-directory: forever-full-stack/backend
         run: npm install
 
       - name: Deploy to Azure App Service
@@ -45,4 +32,4 @@ jobs:
           app-name: ecommerce-mern-app
           slot-name: production
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: backend
+          package: forever-full-stack/backend
