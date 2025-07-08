@@ -52,7 +52,7 @@ forever/
 ### 1. Clone Repo
 
 ```
-git clone https://github.com/yourusername/forever.git
+git clone https://github.com/20060602-hub/Full-Stack-E-Commerce-Website-Using-React-JS-MongoDB-Express-Node-JS.git
 cd forever
 ```
 
@@ -69,6 +69,11 @@ npm install
 cd ../backend
 npm install
 ```
+### 3. Setup Admin
+
+```
+cd ../Admin
+npm install
 
 ### 4. Create .env for Backend
 
