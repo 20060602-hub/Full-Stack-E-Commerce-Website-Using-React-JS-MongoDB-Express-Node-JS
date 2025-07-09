@@ -16,7 +16,7 @@ const Contact = () => {
         <div className='flex flex-col justify-center items-start gap-6'>
           <p className='font-semibold text-xl text-gray-600'>Our Store</p>
           <p className=' text-gray-500'>D24 DC84 <br /> CityWest, Dublin, Ireland</p>
-          <p className=' text-gray-500'>Tel: 0874786869 <br /> Email: admin@forever.com</p>
+          <p className=' text-gray-500'>Tel: 0899883445 <br /> Email: admin@forever.com</p>
           <p className='font-semibold text-xl text-gray-600'>Careers at Forever</p>
           <p className=' text-gray-500'>Learn more about our teams and job openings.</p>
           <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500'>Explore Jobs</button>
